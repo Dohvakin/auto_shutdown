@@ -1,0 +1,1 @@
+* * * * * root flock -n /tmp/shutdown_script.lock /usr/src/app/run_script.sh 2>&1
