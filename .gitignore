@@ -11,3 +11,4 @@ wheels/
 .pytest*
 .aider*
 git-filter-repo.py
+.clinerules-code

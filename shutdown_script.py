@@ -93,7 +93,7 @@ async def shutdown_truenas():
 
 def check_power_and_maybe_shutdown():
     power_check_url = "http://192.168.1.11"
-    interval_enabled = os.environ.get('INTERVAL_CHECK_ENABLED') is not None
+    interval_enabled = os.environ.get('INTERVAL_CHECK_ENABLED') == "true"
 
     if interval_enabled:
         total_checks = 5
@@ -103,7 +103,8 @@ def check_power_and_maybe_shutdown():
             try:
                 response = requests.get(power_check_url, timeout=5)
                 if response.status_code == 200:
-                    current_time = datetime.now(timezone.utc).strftime('%Y-%m-%d %I:%M:%S %p %Z')
+                    timezone_ist = pytz.timezone('Asia/Kolkata')
+                    current_time = datetime.now(timezone_ist).strftime('%Y-%m-%d %I:%M:%S %p %Z')
                     print(f"Electricity is on, doing nothing. Datetime: {current_time}")
                     if get_file_size("/usr/src/app/logs/shutdown_script.log") > 52428800:
                         os.remove("/usr/src/app/logs/shutdown_script.log")
@@ -121,7 +122,8 @@ def check_power_and_maybe_shutdown():
         try:
             response = requests.get(power_check_url, timeout=5)
             if response.status_code == 200:
-                current_time = datetime.now(timezone.utc).strftime('%Y-%m-%d %I:%M:%S %p %Z')
+                timezone_ist = pytz.timezone('Asia/Kolkata')
+                current_time = datetime.now(timezone_ist).strftime('%Y-%m-%d %I:%M:%S %p %Z')
                 print(f"Electricity is on, doing nothing. Datetime: {current_time}")
                 if get_file_size("/usr/src/app/logs/shutdown_script.log") > 52428800:
                     os.remove("/usr/src/app/logs/shutdown_script.log")

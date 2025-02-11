@@ -14,5 +14,11 @@ RUN dos2unix /etc/cron.d/shutdown-crontab
 RUN crontab /etc/cron.d/shutdown-crontab
 RUN mkdir -p /usr/src/app/logs
 RUN chmod 755 /usr/src/app/logs
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+RUN dos2unix /entrypoint.sh
+RUN dos2unix run_script.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["cron", "-f"]

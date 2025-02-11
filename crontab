@@ -1,1 +1,1 @@
-* * * * * root flock -n /tmp/shutdown_script.lock /usr/src/app/run_script.sh 2>&1
+* * * * * flock -n /tmp/shutdown_script.lock /usr/src/app/run_script.sh >> /usr/src/app/logs/cron-logs.log 2>&1
