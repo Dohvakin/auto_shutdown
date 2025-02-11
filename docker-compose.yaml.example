@@ -1,0 +1,13 @@
+services:
+  truenas-shutdown:
+    build: .
+    container_name: truenas-shutdown-cron
+    environment:
+      TRUENAS_HOST: "***********"
+      TRUENAS_USERNAME: "***********"
+      TRUENAS_PASSWORD: "***********"
+      USE_SSL: "true"
+      INTERVAL_CHECK_ENABLED: "false"
+      POWER_CHECK_URL: "***********"
+      CHECK_INTERVAL: ""
+      TOTAL_CHECKS: ""

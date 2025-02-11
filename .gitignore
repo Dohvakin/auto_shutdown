@@ -12,3 +12,4 @@ wheels/
 .aider*
 git-filter-repo.py
 .clinerules-code
+docker-compose.yaml
