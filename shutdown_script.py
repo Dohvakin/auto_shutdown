@@ -16,6 +16,9 @@ def get_file_size(file_path) -> int:
 
     args:
         file_path (str): The path to the file.
+
+    output:
+        int: The size of the file in bytes.
     """
     try:
         size = os.path.getsize(file_path)
@@ -28,7 +31,7 @@ def get_file_size(file_path) -> int:
 async def shutdown_truenas():
     """
     Shuts down the TrueNAS system at `host` using WebSocket middleware calls,
-    reading creds from environment variables.
+    reading credentials from environment variables.
     """
     host = os.getenv("TRUENAS_HOST", "192.168.1.22:444")
     username = os.getenv("TRUENAS_USERNAME", "testing")
@@ -92,6 +95,12 @@ async def shutdown_truenas():
             print("No response — TrueNAS likely shutting down...")
 
 def check_power_and_maybe_shutdown():
+    """
+    This function checks the power status of the TrueNAS system at `power_check_url`
+    and shuts down the system if the power is off.
+    """
+
+
     power_check_url = "http://192.168.1.11"
     interval_enabled = os.environ.get('INTERVAL_CHECK_ENABLED') == "true"
 
