@@ -25,7 +25,7 @@ def get_file_size(file_path) -> int:
     except (FileNotFoundError, OSError):
         return 0
 
-async def shutdown_truenas(host, username, password, use_ssl):
+async def shutdown_truenas(host, username, password, use_ssl) -> None:
     """
     Shuts down the TrueNAS system using WebSocket middleware calls.
     args:
@@ -92,7 +92,9 @@ def check_power_and_maybe_shutdown():
     truenas_username = os.getenv("TRUENAS_USERNAME")
     truenas_password = os.getenv("TRUENAS_PASSWORD")
     use_ssl = os.getenv("USE_SSL", "true").lower() == "true"
-    log_file_path = "/usr/src/app/logs/shutdown_script.log"
+    log_file_path = "/usr/src/app/logs/shutdown_script.log" # Default to TrueNAS host. Change if needed
+
+
 
     def log_and_check_size(message:str) -> None:
         """
@@ -127,14 +129,19 @@ def check_power_and_maybe_shutdown():
             log_and_check_size("Electricity check did not return 200 status. Will check again shortly" if interval_enabled else "Electricity not detected. Initiating shutdown immediately")
 
         except requests.RequestException as e:
-             log_and_check_size(f"Error checking electricity: {e}.  Will check again shortly" if interval_enabled else f"Error checking electricity {e}. Initiating shutdown immediately")
+            log_and_check_size(f"Error checking electricity: {e}.  Will check again shortly" if interval_enabled else f"Error checking electricity {e}. Initiating shutdown immediately")
+        except Exception as e:
+            # Handle other exceptions
+            log_and_check_size(f"Unknown error: {e}.  Will check again shortly" if interval_enabled else f"Unknown error: {e}. Will shutdown immediately")
 
         if interval_enabled:
             time.sleep(check_interval)
 
     print("Power check failed. Initiating shutdown...")
+    # Shutdown the system here using Truenas API or other methods
     asyncio.run(shutdown_truenas(truenas_host, truenas_username, truenas_password, use_ssl))
 
 if __name__ == "__main__":
-    print("Starting shutdown script...")
+    print("Starting the script...")
+
     check_power_and_maybe_shutdown()
