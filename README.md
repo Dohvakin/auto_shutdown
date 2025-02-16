@@ -7,7 +7,7 @@ A Dockerized service that monitors power status and initiates graceful TrueNAS s
 Key files:
 - `shutdown_script.py` - Main Python logic for power checks and shutdown procedures
 - `entrypoint.sh` - Container entrypoint that configures cron scheduling
-- `Dockerfile` - Builds the container image with Python 3.11 and required dependencies
+- `Dockerfile` - Builds the container image with Python 3.x and required dependencies
 - `docker-compose.yaml` - Docker configuration with environment variables
 - `crontab` - Cron schedule configuration for regular checks
 - `pyproject.toml` - Python dependencies specification
@@ -46,13 +46,13 @@ services:
   truenas-shutdown:
     environment:
       TRUENAS_HOST: "nas.example.com:443"      # TrueNAS host:port
-      TRUENAS_USERNAME: "admin"                # API user with shutdown privileges
-      TRUENAS_PASSWORD: "secure_password"      # API user password
-      USE_SSL: "true"                          # HTTPS connection to TrueNAS
-      POWER_CHECK_URL: "http://192.168.1.11"   # Power monitoring endpoint
-      INTERVAL_CHECK_ENABLED: "true"           # Enable verification checks
-      CHECK_INTERVAL: "60"                     # 60 seconds between checks
-      TOTAL_CHECKS: "5"                        # Confirmations before shutdown
+      TRUENAS_USERNAME: "admin"               # API user with shutdown privileges
+      TRUENAS_PASSWORD: "secure_password"     # API user password
+      USE_SSL: "true"                         # HTTPS connection to TrueNAS
+      POWER_CHECK_URL: "http://192.168.1.11"  # Power monitoring endpoint
+      INTERVAL_CHECK_ENABLED: "true"          # Enable verification checks
+      CHECK_INTERVAL: "60"                    # 60 seconds between checks
+      TOTAL_CHECKS: "5"                       # Confirmations before shutdown
 ```
 
 3. Build and deploy:
@@ -60,6 +60,22 @@ services:
 docker compose build --no-cache
 docker compose up -d
 ```
+
+### Development Environment Setup
+To set up your development environment:
+
+#### Note:
+**This is only needed if any new development is to be done, otherwise the project is setup to use docker to run the shutdown service.**
+
+1. Install Python 3.12
+2. Install uv using pip:
+   ```bash
+   pip install uv
+   ```
+3. Install all dependencies:
+   ```bash
+   uv sync
+   ```
 
 ## Environment Variables Reference
 
@@ -134,7 +150,7 @@ tail -f logs/cron.log
 
 1. By default, TrueNAS is configured to use local CA for SSL certificate and so the SSL verification is disabled. For production use, do the following:
 
-      * Change the shutdown-script.py to use the SSL verification. This can be done by changing the following to shutdown_script/shutdown script to use actual SSL context:
+      * Change the shutdown-script.py to use the SSL verification. This can be done by changing the following in the shutdown_script.py to use actual SSL context:
 
          ```py
          ssl_context = ssl._create_unverified_context if use_ssl else None
