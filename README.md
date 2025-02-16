@@ -132,7 +132,7 @@ tail -f logs/cron.log
 
 ## Security Considerations
 
-1. By default, TrueNAS is configured configured to use local CA for SSL certificate and so the SSL verification is disabled for SSL connections. For production use, the following should be configured:
+1. By default, TrueNAS is configured to use local CA for SSL certificate and so the SSL verification is disabled. For production use, do the following:
 
       * Change the shutdown-script.py to use the SSL verification. This can be done by changing the following to shutdown_script/shutdown script to use actual SSL context:
 
