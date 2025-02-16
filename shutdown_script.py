@@ -25,7 +25,7 @@ def get_file_size(file_path) -> int:
     except (FileNotFoundError, OSError):
         return 0
 
-async def shutdown_truenas(host, username, password, use_ssl) -> None:
+async def shutdown_truenas(host:str, username:str, password:str, use_ssl:bool) -> None:
     """
     Shuts down the TrueNAS system using WebSocket middleware calls.
     args:
@@ -88,9 +88,9 @@ def check_power_and_maybe_shutdown():
     interval_enabled = os.getenv("INTERVAL_CHECK_ENABLED", "false").lower() == "true"
     total_checks = int(os.getenv("TOTAL_CHECKS", "5"))  # Default to 5 checks
     check_interval = int(os.getenv("CHECK_INTERVAL", "60"))  # Default to 60 seconds
-    truenas_host = os.getenv("TRUENAS_HOST")
-    truenas_username = os.getenv("TRUENAS_USERNAME")
-    truenas_password = os.getenv("TRUENAS_PASSWORD")
+    truenas_host = os.getenv("TRUENAS_HOST","192.168.1.22:444")
+    truenas_username = os.getenv("TRUENAS_USERNAME","admin")
+    truenas_password = os.getenv("TRUENAS_PASSWORD","admin")
     use_ssl = os.getenv("USE_SSL", "true").lower() == "true"
     log_file_path = "/usr/src/app/logs/shutdown_script.log" # Default to TrueNAS host. Change if needed
 
