@@ -132,14 +132,16 @@ tail -f logs/cron.log
 
 ## Security Considerations
 
-1. By default, TrueNAS is configured configured to use local CA for SSL certificate and so the SSL verification is disabled for SSL connections. For production use, the following should be configured: 
-       * Change the shutdown-script.py to use the SSL verification. This can be done by adding the following to shutdown_script/shutdown script:
+1. By default, TrueNAS is configured configured to use local CA for SSL certificate and so the SSL verification is disabled for SSL connections. For production use, the following should be configured:
 
-      ```py
-      ssl_context = ssl.SSLContext(protocol=PROTOCOL_TLSv1) if use_ssl else None
-      uri = f"wss://{host}/websocket" if use_ssl else f"ws://{host}/websocket"
-      print(f"Using {'SSL' if use_ssl else 'Non-SSL'} connection: {uri}")
-      ```
+      * Change the shutdown-script.py to use the SSL verification. This can be done by changing the following to shutdown_script/shutdown script to use actual SSL context:
+
+         ```py
+         ssl_context = ssl._create_unverified_context if use_ssl else None
+         uri = f"wss://{host}/websocket" if use_ssl else f"ws://{host}/websocket"
+         print(f"Using {'SSL' if use_ssl else 'Non-SSL'} connection: {uri}")
+         ```
+
 2. Create dedicated API user with minimum required privileges
 3. Store sensitive credentials in Docker secrets (recommended for production)
 4. Regularly rotate API credentials
