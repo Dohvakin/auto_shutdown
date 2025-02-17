@@ -1,7 +1,7 @@
 [project]
 name = "auto-shutdown"
 version = "0.1.0"
-description = "Add your description here"
+description = "This repository is a python script run via docker to shutdown my TrueNAS instance when electricity goes off"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
