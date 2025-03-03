@@ -72,7 +72,7 @@ async def shutdown_truenas(host: str, username: str, password: str, use_ssl: boo
             "id": session_id,
             "msg": "method",
             "method": "system.shutdown",
-            "params": []
+            "params": ["Power off due to power check failure"]
         }
         await ws.send(json.dumps(shutdown_msg))
 
